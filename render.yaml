@@ -1,7 +1,3 @@
-# Render Blueprint for Blackjack Java Game
-# Repository: tobiasrogerhammer/blackjack-java
-# Branch: master
-
 services:
   - type: web
     name: blackjack-java
