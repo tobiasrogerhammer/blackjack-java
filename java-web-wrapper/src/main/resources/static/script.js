@@ -1,9 +1,13 @@
 // Blackjack Game JavaScript
+console.log("Script.js loaded");
+
 class BlackjackGame {
   constructor() {
+    console.log("BlackjackGame constructor called");
     this.gameState = null;
     this.initializeElements();
     this.setupEventListeners();
+    console.log("BlackjackGame initialized");
   }
 
   initializeElements() {
@@ -25,10 +29,15 @@ class BlackjackGame {
   }
 
   setupEventListeners() {
-    this.placeBetBtn.addEventListener("click", () => this.placeBet());
+    console.log("Setting up event listeners");
+    this.placeBetBtn.addEventListener("click", () => {
+      console.log("Place bet button clicked");
+      this.placeBet();
+    });
     this.hitBtn.addEventListener("click", () => this.hit());
     this.standBtn.addEventListener("click", () => this.stand());
     this.newGameBtn.addEventListener("click", () => this.newGame());
+    console.log("Event listeners set up");
   }
 
   async placeBet() {
@@ -306,5 +315,6 @@ class BlackjackGame {
 
 // Initialize the game when the page loads
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("DOM loaded, initializing BlackjackGame");
   new BlackjackGame();
 });
