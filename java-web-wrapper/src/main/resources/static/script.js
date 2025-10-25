@@ -47,7 +47,19 @@ class BlackjackGame {
         body: `amount=${amount}`,
       });
 
-      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const text = await response.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server");
+      }
+
       if (result.success) {
         this.gameState = result.game;
         this.updateDisplay();
@@ -71,7 +83,19 @@ class BlackjackGame {
         body: "initialMoney=100",
       });
 
-      const result = await response.json();
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const text = await response.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server");
+      }
+
       if (result.success) {
         this.gameState = result.game;
         this.updateDisplay();
