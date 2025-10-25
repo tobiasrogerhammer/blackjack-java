@@ -157,11 +157,13 @@ class BlackjackGame {
 
   async hit() {
     try {
+      console.log("Hit button clicked");
       const response = await fetch("/api/game/hit", {
         method: "POST",
       });
 
       const result = await response.json();
+      console.log("Hit response:", result);
       if (result.success) {
         this.gameState = result.game;
         this.updateDisplay();
@@ -176,11 +178,13 @@ class BlackjackGame {
 
   async stand() {
     try {
+      console.log("Stand button clicked");
       const response = await fetch("/api/game/stand", {
         method: "POST",
       });
 
       const result = await response.json();
+      console.log("Stand response:", result);
       if (result.success) {
         this.gameState = result.game;
         this.updateDisplay();
@@ -232,14 +236,15 @@ class BlackjackGame {
     this.betDisplay.textContent = this.gameState.player.currentBet || 0;
 
     // Update hands - hide dealer's first card if game is still in progress
-    const hideDealerCard = !this.gameState.gameStatus || 
-                          this.gameState.gameStatus === "NEW_GAME" ||
-                          this.gameState.gameStatus === null ||
-                          this.gameState.gameStatus === undefined;
-    
+    const hideDealerCard =
+      !this.gameState.gameStatus ||
+      this.gameState.gameStatus === "NEW_GAME" ||
+      this.gameState.gameStatus === null ||
+      this.gameState.gameStatus === undefined;
+
     console.log("Game status:", this.gameState.gameStatus);
     console.log("Hide dealer card:", hideDealerCard);
-    
+
     this.updateHand(
       this.dealerHand,
       this.gameState.dealerHand,
@@ -270,14 +275,18 @@ class BlackjackGame {
   }
 
   updateHand(container, hand, isDealer = false, hideFirstCard = false) {
-    console.log("updateHand called:", { isDealer, hideFirstCard, handLength: hand ? hand.length : 0 });
+    console.log("updateHand called:", {
+      isDealer,
+      hideFirstCard,
+      handLength: hand ? hand.length : 0,
+    });
     container.innerHTML = "";
 
     if (hand && hand.length > 0) {
       hand.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.className = "card";
-        
+
         // Hide dealer's first card if specified
         if (isDealer && hideFirstCard && index === 0) {
           console.log("Hiding dealer's first card");
@@ -285,7 +294,7 @@ class BlackjackGame {
           cardElement.classList.add("hidden-card");
         } else {
           cardElement.textContent = `${card.rank} of ${card.suit}`;
-          
+
           // Color code red cards
           if (card.suit === "Hearts" || card.suit === "Diamonds") {
             cardElement.classList.add("red");
@@ -300,7 +309,9 @@ class BlackjackGame {
   }
 
   checkGameEnd() {
+    console.log("checkGameEnd called, gameStatus:", this.gameState.gameStatus);
     if (this.gameState.gameStatus) {
+      console.log("Game ended with status:", this.gameState.gameStatus);
       this.showNewGameControls();
 
       switch (this.gameState.gameStatus) {
@@ -319,7 +330,12 @@ class BlackjackGame {
         case "PUSH":
           this.showStatus("🤝 Push! It's a tie!", "push");
           break;
+        default:
+          console.log("Unknown game status:", this.gameState.gameStatus);
+          this.showStatus("Game ended", "info");
       }
+    } else {
+      console.log("No game status set");
     }
   }
 
