@@ -232,14 +232,32 @@ class BlackjackGame {
     this.betDisplay.textContent = this.gameState.player.currentBet || 0;
 
     // Update hands - hide dealer's first card if game is still in progress
-    const hideDealerCard = !this.gameState.gameStatus || this.gameState.gameStatus === "NEW_GAME";
-    this.updateHand(this.dealerHand, this.gameState.dealerHand, true, hideDealerCard);
+    const hideDealerCard = !this.gameState.gameStatus || 
+                          this.gameState.gameStatus === "NEW_GAME" ||
+                          this.gameState.gameStatus === null ||
+                          this.gameState.gameStatus === undefined;
+    
+    console.log("Game status:", this.gameState.gameStatus);
+    console.log("Hide dealer card:", hideDealerCard);
+    
+    this.updateHand(
+      this.dealerHand,
+      this.gameState.dealerHand,
+      true,
+      hideDealerCard
+    );
     this.updateHand(this.playerHand, this.gameState.player.hand, false, false);
 
     // Update hand values
-    if (hideDealerCard && this.gameState.dealerHand && this.gameState.dealerHand.length > 1) {
+    if (
+      hideDealerCard &&
+      this.gameState.dealerHand &&
+      this.gameState.dealerHand.length > 1
+    ) {
       // Show only the value of the visible card (second card)
-      const visibleCardValue = this.gameState.dealerHand[1] ? this.gameState.dealerHand[1].value : 0;
+      const visibleCardValue = this.gameState.dealerHand[1]
+        ? this.gameState.dealerHand[1].value
+        : 0;
       this.dealerValue.textContent = `Value: ${visibleCardValue}`;
     } else {
       this.dealerValue.textContent = `Value: ${
@@ -252,6 +270,7 @@ class BlackjackGame {
   }
 
   updateHand(container, hand, isDealer = false, hideFirstCard = false) {
+    console.log("updateHand called:", { isDealer, hideFirstCard, handLength: hand ? hand.length : 0 });
     container.innerHTML = "";
 
     if (hand && hand.length > 0) {
@@ -261,6 +280,7 @@ class BlackjackGame {
         
         // Hide dealer's first card if specified
         if (isDealer && hideFirstCard && index === 0) {
+          console.log("Hiding dealer's first card");
           cardElement.textContent = "🂠 Hidden";
           cardElement.classList.add("hidden-card");
         } else {
