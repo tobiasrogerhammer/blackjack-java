@@ -164,6 +164,20 @@ public class GameController {
     }
 
     /**
+     * Health check endpoint
+     */
+    @GetMapping(value = "/healthz", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> healthCheck() {
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "healthy");
+        response.put("service", "blackjack-web");
+        return ResponseEntity.ok()
+            .contentType(MediaType.APPLICATION_JSON)
+            .body(response);
+    }
+
+    /**
      * Get current game state
      */
     @GetMapping(value = "/state", produces = MediaType.APPLICATION_JSON_VALUE)
