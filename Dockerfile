@@ -4,10 +4,10 @@ FROM openjdk:17-jdk-slim
 # Set working directory
 WORKDIR /app
 
-# Copy Maven wrapper and pom.xml
-COPY mvnw .
-COPY .mvn .mvn
-COPY pom.xml .
+# Copy Maven wrapper and pom.xml from java-web-wrapper directory
+COPY java-web-wrapper/mvnw .
+COPY java-web-wrapper/.mvn .mvn
+COPY java-web-wrapper/pom.xml .
 
 # Make mvnw executable
 RUN chmod +x ./mvnw
@@ -16,7 +16,7 @@ RUN chmod +x ./mvnw
 RUN ./mvnw dependency:go-offline -B
 
 # Copy source code
-COPY src ./src
+COPY java-web-wrapper/src ./src
 
 # Build the application
 RUN ./mvnw clean package -DskipTests
