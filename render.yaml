@@ -5,7 +5,6 @@
 services:
   - type: web
     name: blackjack-java
-    runtime: java
     buildCommand: ./mvnw clean package -DskipTests
     startCommand: java -jar target/blackjack-web-1.0.0.jar
     envVars:
