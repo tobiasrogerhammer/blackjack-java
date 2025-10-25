@@ -50,6 +50,13 @@ class BlackjackGame {
     }
 
     try {
+      // Check if we already have a game with a bet
+      if (this.gameState && this.gameState.player && this.gameState.player.currentBet > 0) {
+        console.log("Game already has a bet, starting new game");
+        this.startNewGame();
+        return;
+      }
+
       const response = await fetch("/api/game/bet", {
         method: "POST",
         headers: {
@@ -197,6 +204,31 @@ class BlackjackGame {
       }
     } catch (error) {
       this.showStatus("Error standing: " + error.message, "error");
+    }
+  }
+
+  async startNewGame() {
+    try {
+      console.log("Starting new game");
+      const response = await fetch("/api/game/start", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        body: "initialMoney=100",
+      });
+
+      const result = await response.json();
+      if (result.success) {
+        this.gameState = result.game;
+        this.updateDisplay();
+        this.showBetControls();
+        this.showStatus("New game ready! Place a bet to start.", "info");
+      } else {
+        this.showStatus(result.error, "error");
+      }
+    } catch (error) {
+      this.showStatus("Error starting new game: " + error.message, "error");
     }
   }
 
