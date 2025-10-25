@@ -10,15 +10,11 @@ import java.util.List;
  * from your original Blackjack project.
  */
 public class Player {
-    private int money;
     private List<Card> hand;
-    private int currentBet;
     private boolean hasStood;
 
-    public Player(int initialMoney) {
-        this.money = initialMoney;
+    public Player() {
         this.hand = new ArrayList<>();
-        this.currentBet = 0;
         this.hasStood = false;
     }
 
@@ -58,33 +54,16 @@ public class Player {
 
     public void clearHand() {
         hand.clear();
-        currentBet = 0;
         hasStood = false;
     }
 
     // Getters and setters
-    public int getMoney() {
-        return money;
-    }
-
-    public void setMoney(int money) {
-        this.money = money;
-    }
-
     public List<Card> getHand() {
         return hand;
     }
 
     public void setHand(List<Card> hand) {
         this.hand = hand;
-    }
-
-    public int getCurrentBet() {
-        return currentBet;
-    }
-
-    public void setCurrentBet(int currentBet) {
-        this.currentBet = currentBet;
     }
 
     public boolean hasStood() {

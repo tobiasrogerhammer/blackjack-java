@@ -43,17 +43,18 @@ public class GameController {
     }
 
     /**
-     * Start a new game
+     * Start a new game and deal initial cards
      */
     @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> startGame(@RequestParam(defaultValue = "100") int initialMoney) {
         try {
             Game game = gameService.startNewGame(initialMoney);
+            gameService.dealInitialCards();
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("game", game);
-            response.put("message", "New game started!");
+            response.put("message", "New game started with initial cards!");
             return ResponseEntity.ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(response);
@@ -115,53 +116,7 @@ public class GameController {
         }
     }
 
-    /**
-     * Place a bet
-     */
-    @PostMapping(value = "/bet", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> placeBet(@RequestParam int amount) {
-        try {
-            Game game = gameService.placeBet(amount);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("game", game);
-            return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-        }
-    }
 
-    /**
-     * Deal initial cards
-     */
-    @PostMapping(value = "/deal", produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public ResponseEntity<Map<String, Object>> dealInitialCards() {
-        try {
-            Game game = gameService.dealInitialCards();
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("game", game);
-            return ResponseEntity.ok()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-        } catch (Exception e) {
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("error", e.getMessage());
-            return ResponseEntity.badRequest()
-                .contentType(MediaType.APPLICATION_JSON)
-                .body(response);
-        }
-    }
 
     /**
      * Health check endpoint

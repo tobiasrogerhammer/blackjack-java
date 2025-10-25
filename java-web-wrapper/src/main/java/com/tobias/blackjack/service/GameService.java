@@ -16,10 +16,10 @@ public class GameService {
     private Game currentGame;
 
     /**
-     * Start a new game with initial money
+     * Start a new game
      */
     public Game startNewGame(int initialMoney) {
-        Player player = new Player(initialMoney);
+        Player player = new Player();
         currentGame = new Game(player);
         return currentGame;
     }
@@ -56,19 +56,6 @@ public class GameService {
         return currentGame;
     }
 
-    /**
-     * Place a bet - starts a new game if none exists
-     */
-    public Game placeBet(int amount) {
-        if (currentGame == null) {
-            // Start a new game if none exists
-            Player player = new Player(100); // Default starting money
-            currentGame = new Game(player);
-        }
-        
-        currentGame.placeBet(amount);
-        return currentGame;
-    }
 
     /**
      * Deal initial cards to start the game

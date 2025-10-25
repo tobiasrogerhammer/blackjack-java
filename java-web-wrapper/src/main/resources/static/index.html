@@ -13,15 +13,6 @@
             <p>Live Java Demo - Play instantly in your browser</p>
         </header>
 
-        <div class="game-info">
-            <div class="money-display">
-                <span>💰 Money: $<span id="money">100</span></span>
-            </div>
-            <div class="bet-display">
-                <span>🎯 Bet: $<span id="current-bet">0</span></span>
-            </div>
-        </div>
-
         <div class="game-area">
             <div class="dealer-section">
                 <h3>Dealer</h3>
@@ -41,24 +32,18 @@
         </div>
 
         <div class="controls">
-            <div class="bet-controls" id="bet-controls">
-                <label for="bet-amount">Place your bet:</label>
-                <input type="number" id="bet-amount" min="1" max="100" value="10" placeholder="Enter amount">
-                <button id="place-bet-btn">Start Game</button>
-            </div>
-
             <div class="game-controls" id="game-controls" style="display: none;">
                 <button id="hit-btn">Hit</button>
                 <button id="stand-btn">Stand</button>
             </div>
 
-            <div class="new-game-controls" id="new-game-controls" style="display: none;">
-                <button id="new-game-btn">Play Again</button>
+            <div class="new-game-controls" id="new-game-controls">
+                <button id="new-game-btn">Start New Game</button>
             </div>
         </div>
 
         <div class="status" id="game-status">
-            <p>Welcome! Place a bet to start playing.</p>
+            <p>Welcome! Click "Start New Game" to begin playing.</p>
         </div>
     </div>
 
