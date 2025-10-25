@@ -51,7 +51,11 @@ class BlackjackGame {
 
     try {
       // Check if we already have a game with a bet
-      if (this.gameState && this.gameState.player && this.gameState.player.currentBet > 0) {
+      if (
+        this.gameState &&
+        this.gameState.player &&
+        this.gameState.player.currentBet > 0
+      ) {
         console.log("Game already has a bet, starting new game");
         this.startNewGame();
         return;
