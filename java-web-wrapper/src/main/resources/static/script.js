@@ -181,7 +181,11 @@ class BlackjackGame {
         console.log("Player hand value:", this.gameState.playerHandValue);
         console.log("Game status:", this.gameState.gameStatus);
         this.updateDisplay();
-        this.checkGameEnd();
+        
+        // Only check game end if there's a game status
+        if (this.gameState.gameStatus && this.gameState.gameStatus !== "NEW_GAME") {
+          this.checkGameEnd();
+        }
       } else {
         this.showStatus(result.error, "error");
       }
