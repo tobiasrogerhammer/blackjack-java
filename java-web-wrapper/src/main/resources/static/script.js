@@ -166,6 +166,9 @@ class BlackjackGame {
       console.log("Hit response:", result);
       if (result.success) {
         this.gameState = result.game;
+        console.log("After hit - game state:", this.gameState);
+        console.log("Player hand value:", this.gameState.playerHandValue);
+        console.log("Game status:", this.gameState.gameStatus);
         this.updateDisplay();
         this.checkGameEnd();
       } else {
