@@ -32,7 +32,9 @@ class BlackjackGame {
   }
 
   async placeBet() {
+    console.log("placeBet called");
     const amount = parseInt(this.betAmount.value);
+    console.log("Bet amount:", amount);
     if (amount <= 0) {
       this.showStatus("Please enter a valid bet amount.", "error");
       return;
@@ -61,6 +63,7 @@ class BlackjackGame {
       }
 
       if (result.success) {
+        console.log("Bet successful, game state:", result.game);
         this.gameState = result.game;
         this.updateDisplay();
         this.showStatus("Bet placed! Game starting...", "info");
@@ -94,6 +97,7 @@ class BlackjackGame {
       }
 
       if (result.success) {
+        console.log("Deal successful, game state:", result.game);
         this.gameState = result.game;
         this.updateDisplay();
         this.showGameControls();
@@ -205,7 +209,11 @@ class BlackjackGame {
   }
 
   updateDisplay() {
-    if (!this.gameState) return;
+    console.log("updateDisplay called, gameState:", this.gameState);
+    if (!this.gameState) {
+      console.log("No game state, returning");
+      return;
+    }
 
     // Debug: Log the game state
     console.log("Game State:", this.gameState);
@@ -219,7 +227,9 @@ class BlackjackGame {
     this.updateHand(this.playerHand, this.gameState.player.hand);
 
     // Update hand values
-    this.dealerValue.textContent = `Value: ${this.gameState.dealerHandValue || 0}`;
+    this.dealerValue.textContent = `Value: ${
+      this.gameState.dealerHandValue || 0
+    }`;
     this.playerValue.textContent = `Value: ${
       this.gameState.playerHandValue || 0
     }`;
