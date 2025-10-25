@@ -4,6 +4,7 @@ import com.tobias.blackjack.model.Game;
 import com.tobias.blackjack.model.Player;
 import com.tobias.blackjack.service.GameService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -34,9 +35,17 @@ public class GameController {
     }
 
     /**
+     * Serve the main game page at root
+     */
+    @GetMapping("")
+    public String gamePageRoot(Model model) {
+        return "index";
+    }
+
+    /**
      * Start a new game
      */
-    @PostMapping("/start")
+    @PostMapping(value = "/start", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> startGame(@RequestParam(defaultValue = "100") int initialMoney) {
         try {
@@ -45,19 +54,23 @@ public class GameController {
             response.put("success", true);
             response.put("game", game);
             response.put("message", "New game started!");
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         }
     }
 
     /**
      * Player hits (takes another card)
      */
-    @PostMapping("/hit")
+    @PostMapping(value = "/hit", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> hit() {
         try {
@@ -65,19 +78,23 @@ public class GameController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("game", game);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         }
     }
 
     /**
      * Player stands (stops taking cards)
      */
-    @PostMapping("/stand")
+    @PostMapping(value = "/stand", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> stand() {
         try {
@@ -85,19 +102,23 @@ public class GameController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("game", game);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         }
     }
 
     /**
      * Place a bet
      */
-    @PostMapping("/bet")
+    @PostMapping(value = "/bet", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> placeBet(@RequestParam int amount) {
         try {
@@ -105,12 +126,16 @@ public class GameController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("game", game);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         }
     }
 
