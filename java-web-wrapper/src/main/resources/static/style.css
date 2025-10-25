@@ -297,3 +297,12 @@ header p {
         font-size: 0.85em;
     }
 }
+
+/* Hidden card styling */
+.hidden-card {
+    background: linear-gradient(135deg, #2d3748 0%, #4a5568 100%);
+    color: #e2e8f0;
+    border: 2px solid #4a5568;
+    font-weight: bold;
+    opacity: 0.8;
+}

@@ -231,31 +231,45 @@ class BlackjackGame {
     this.moneyDisplay.textContent = this.gameState.player.money;
     this.betDisplay.textContent = this.gameState.player.currentBet || 0;
 
-    // Update hands
-    this.updateHand(this.dealerHand, this.gameState.dealerHand);
-    this.updateHand(this.playerHand, this.gameState.player.hand);
+    // Update hands - hide dealer's first card if game is still in progress
+    const hideDealerCard = !this.gameState.gameStatus || this.gameState.gameStatus === "NEW_GAME";
+    this.updateHand(this.dealerHand, this.gameState.dealerHand, true, hideDealerCard);
+    this.updateHand(this.playerHand, this.gameState.player.hand, false, false);
 
     // Update hand values
-    this.dealerValue.textContent = `Value: ${
-      this.gameState.dealerHandValue || 0
-    }`;
+    if (hideDealerCard && this.gameState.dealerHand && this.gameState.dealerHand.length > 1) {
+      // Show only the value of the visible card (second card)
+      const visibleCardValue = this.gameState.dealerHand[1] ? this.gameState.dealerHand[1].value : 0;
+      this.dealerValue.textContent = `Value: ${visibleCardValue}`;
+    } else {
+      this.dealerValue.textContent = `Value: ${
+        this.gameState.dealerHandValue || 0
+      }`;
+    }
     this.playerValue.textContent = `Value: ${
       this.gameState.playerHandValue || 0
     }`;
   }
 
-  updateHand(container, hand) {
+  updateHand(container, hand, isDealer = false, hideFirstCard = false) {
     container.innerHTML = "";
 
     if (hand && hand.length > 0) {
-      hand.forEach((card) => {
+      hand.forEach((card, index) => {
         const cardElement = document.createElement("div");
         cardElement.className = "card";
-        cardElement.textContent = `${card.rank} of ${card.suit}`;
-
-        // Color code red cards
-        if (card.suit === "Hearts" || card.suit === "Diamonds") {
-          cardElement.classList.add("red");
+        
+        // Hide dealer's first card if specified
+        if (isDealer && hideFirstCard && index === 0) {
+          cardElement.textContent = "🂠 Hidden";
+          cardElement.classList.add("hidden-card");
+        } else {
+          cardElement.textContent = `${card.rank} of ${card.suit}`;
+          
+          // Color code red cards
+          if (card.suit === "Hearts" || card.suit === "Diamonds") {
+            cardElement.classList.add("red");
+          }
         }
 
         container.appendChild(cardElement);
