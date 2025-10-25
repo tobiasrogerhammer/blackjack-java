@@ -140,9 +140,33 @@ public class GameController {
     }
 
     /**
+     * Deal initial cards
+     */
+    @PostMapping(value = "/deal", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseBody
+    public ResponseEntity<Map<String, Object>> dealInitialCards() {
+        try {
+            Game game = gameService.dealInitialCards();
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", true);
+            response.put("game", game);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+        } catch (Exception e) {
+            Map<String, Object> response = new HashMap<>();
+            response.put("success", false);
+            response.put("error", e.getMessage());
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
+        }
+    }
+
+    /**
      * Get current game state
      */
-    @GetMapping("/state")
+    @GetMapping(value = "/state", produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public ResponseEntity<Map<String, Object>> getGameState() {
         try {
@@ -150,12 +174,16 @@ public class GameController {
             Map<String, Object> response = new HashMap<>();
             response.put("success", true);
             response.put("game", game);
-            return ResponseEntity.ok(response);
+            return ResponseEntity.ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         } catch (Exception e) {
             Map<String, Object> response = new HashMap<>();
             response.put("success", false);
             response.put("error", e.getMessage());
-            return ResponseEntity.badRequest().body(response);
+            return ResponseEntity.badRequest()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(response);
         }
     }
 }

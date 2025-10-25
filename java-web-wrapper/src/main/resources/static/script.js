@@ -64,12 +64,45 @@ class BlackjackGame {
         this.gameState = result.game;
         this.updateDisplay();
         this.showStatus("Bet placed! Game starting...", "info");
-        this.startGame();
+        // Start the game by dealing initial cards
+        this.dealInitialCards();
       } else {
         this.showStatus(result.error, "error");
       }
     } catch (error) {
       this.showStatus("Error placing bet: " + error.message, "error");
+    }
+  }
+
+  async dealInitialCards() {
+    try {
+      const response = await fetch("/api/game/deal", {
+        method: "POST",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const text = await response.text();
+      let result;
+      try {
+        result = JSON.parse(text);
+      } catch (parseError) {
+        console.error("Failed to parse JSON:", text);
+        throw new Error("Invalid response from server");
+      }
+
+      if (result.success) {
+        this.gameState = result.game;
+        this.updateDisplay();
+        this.showGameControls();
+        this.showStatus("Game started! Hit or Stand.", "info");
+      } else {
+        this.showStatus(result.error, "error");
+      }
+    } catch (error) {
+      this.showStatus("Error dealing cards: " + error.message, "error");
     }
   }
 

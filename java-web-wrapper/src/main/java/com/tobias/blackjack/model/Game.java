@@ -103,10 +103,18 @@ public class Game {
     }
 
     public void placeBet(int amount) {
-        if (amount <= player.getMoney() && amount > 0) {
-            player.setCurrentBet(amount);
-            player.setMoney(player.getMoney() - amount);
+        if (amount <= 0) {
+            throw new IllegalArgumentException("Bet amount must be positive");
         }
+        if (amount > player.getMoney()) {
+            throw new IllegalArgumentException("Insufficient funds. You have $" + player.getMoney());
+        }
+        if (player.getCurrentBet() > 0) {
+            throw new IllegalStateException("You have already placed a bet for this game");
+        }
+        
+        player.setCurrentBet(amount);
+        player.setMoney(player.getMoney() - amount);
     }
 
     // Getters and setters

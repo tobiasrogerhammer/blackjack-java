@@ -57,14 +57,28 @@ public class GameService {
     }
 
     /**
-     * Place a bet
+     * Place a bet - starts a new game if none exists
      */
     public Game placeBet(int amount) {
         if (currentGame == null) {
-            throw new IllegalStateException("No active game. Please start a new game first.");
+            // Start a new game if none exists
+            Player player = new Player(100); // Default starting money
+            currentGame = new Game(player);
         }
         
         currentGame.placeBet(amount);
+        return currentGame;
+    }
+
+    /**
+     * Deal initial cards to start the game
+     */
+    public Game dealInitialCards() {
+        if (currentGame == null) {
+            throw new IllegalStateException("No active game. Please place a bet first.");
+        }
+        
+        currentGame.dealInitialCards();
         return currentGame;
     }
 
