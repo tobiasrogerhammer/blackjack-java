@@ -1,0 +1,12 @@
+# Render deployment configuration
+services:
+  - type: web
+    name: blackjack-web
+    env: java
+    buildCommand: ./mvnw clean package -DskipTests
+    startCommand: java -jar target/blackjack-web-1.0.0.jar
+    envVars:
+      - key: JAVA_VERSION
+        value: 17
+      - key: SPRING_PROFILES_ACTIVE
+        value: production
