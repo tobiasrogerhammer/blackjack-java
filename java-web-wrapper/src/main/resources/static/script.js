@@ -56,7 +56,6 @@ class BlackjackGame {
     }
   }
 
-
   async hit() {
     try {
       console.log("Hit button clicked");
@@ -72,9 +71,12 @@ class BlackjackGame {
         console.log("Player hand value:", this.gameState.playerHandValue);
         console.log("Game status:", this.gameState.gameStatus);
         this.updateDisplay();
-        
+
         // Only check game end if there's a game status
-        if (this.gameState.gameStatus && this.gameState.gameStatus !== "NEW_GAME") {
+        if (
+          this.gameState.gameStatus &&
+          this.gameState.gameStatus !== "NEW_GAME"
+        ) {
           this.checkGameEnd();
         }
       } else {
@@ -114,24 +116,47 @@ class BlackjackGame {
     }
 
     // Update dealer hand
-    this.updateHand(this.dealerHand, this.gameState.dealerHand, true, this.shouldHideDealerCard());
-    this.dealerValue.textContent = this.gameState.dealerHandValue;
+    this.updateHand(
+      this.dealerHand,
+      this.gameState.dealerHand,
+      true,
+      this.shouldHideDealerCard()
+    );
+    
+    // Only show dealer value when game has ended
+    if (this.gameHasEnded()) {
+      this.dealerValue.textContent = `Value: ${this.gameState.dealerHandValue}`;
+    } else {
+      this.dealerValue.textContent = "Value: ?";
+    }
 
     // Update player hand
     this.updateHand(this.playerHand, this.gameState.player.hand, false, false);
-    this.playerValue.textContent = this.gameState.playerHandValue;
+    this.playerValue.textContent = `Value: ${this.gameState.playerHandValue}`;
   }
 
   shouldHideDealerCard() {
-    return this.gameState.gameStatus === "NEW_GAME" || 
-           this.gameState.gameStatus === null || 
-           this.gameState.gameStatus === undefined;
+    return (
+      this.gameState.gameStatus === "NEW_GAME" ||
+      this.gameState.gameStatus === null ||
+      this.gameState.gameStatus === undefined
+    );
+  }
+
+  gameHasEnded() {
+    return (
+      this.gameState.gameStatus === "PLAYER_WINS" ||
+      this.gameState.gameStatus === "DEALER_WINS" ||
+      this.gameState.gameStatus === "PLAYER_BUSTED" ||
+      this.gameState.gameStatus === "DEALER_BUSTED" ||
+      this.gameState.gameStatus === "PUSH"
+    );
   }
 
   updateHand(handElement, cards, isDealer, hideFirstCard) {
     console.log("updateHand called", { isDealer, hideFirstCard, cards });
     handElement.innerHTML = "";
-    
+
     if (!cards || cards.length === 0) {
       console.log("No cards to display");
       return;
@@ -140,7 +165,7 @@ class BlackjackGame {
     cards.forEach((card, index) => {
       const cardElement = document.createElement("div");
       cardElement.className = "card";
-      
+
       if (isDealer && hideFirstCard && index === 0) {
         cardElement.innerHTML = "🂠<br>Hidden";
         cardElement.classList.add("hidden-card");
@@ -149,7 +174,7 @@ class BlackjackGame {
         cardElement.innerHTML = `${card.suit} ${card.rank}`;
         console.log("Showing card:", card.suit, card.rank);
       }
-      
+
       handElement.appendChild(cardElement);
     });
   }
