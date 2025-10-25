@@ -207,6 +207,9 @@ class BlackjackGame {
   updateDisplay() {
     if (!this.gameState) return;
 
+    // Debug: Log the game state
+    console.log("Game State:", this.gameState);
+
     // Update money and bet displays
     this.moneyDisplay.textContent = this.gameState.player.money;
     this.betDisplay.textContent = this.gameState.player.currentBet || 0;
@@ -216,9 +219,9 @@ class BlackjackGame {
     this.updateHand(this.playerHand, this.gameState.player.hand);
 
     // Update hand values
-    this.dealerValue.textContent = `Value: ${this.gameState.dealerValue || 0}`;
+    this.dealerValue.textContent = `Value: ${this.gameState.dealerHandValue || 0}`;
     this.playerValue.textContent = `Value: ${
-      this.gameState.player.handValue || 0
+      this.gameState.playerHandValue || 0
     }`;
   }
 

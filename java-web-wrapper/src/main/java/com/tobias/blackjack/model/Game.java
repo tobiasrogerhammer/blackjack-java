@@ -149,4 +149,13 @@ public class Game {
     public void setGameStatus(String gameStatus) {
         this.gameStatus = gameStatus;
     }
+
+    // Additional getters for frontend
+    public int getDealerHandValue() {
+        return getDealerValue();
+    }
+
+    public int getPlayerHandValue() {
+        return player.getHandValue();
+    }
 }
